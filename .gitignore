@@ -1,0 +1,9 @@
+__pychache__*
+.DS_Store
+notities.txt
+*.swp
+
+#node
+node_modules
+package-lock.json
+package.json

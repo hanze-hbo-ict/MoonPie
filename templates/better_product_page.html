@@ -17,17 +17,6 @@
   </head>
 
   <body>
-    {% for mess in get_flashed_messages()  %}
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        {{ mess }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    {% endfor %}
-    
-
-
 
     <main role="main">
 
@@ -36,15 +25,6 @@
           <img src="/static/imgs/moonpie.jpeg" class="img-thumbnail" style="width:20vw;" alt="">
           <h1 class="jumbotron-heading">Moonpie Mining Corp.</h1>
           <p class="lead text-muted">We mine the moon, you get the minerals.</p>
-          <p>
-            {% if session.csrf_token %}
-            <h2>Welkom, {{ session.naam }}</h2>
-            <a href="#" class="btn btn-primary my-2">Place order</a>
-            <a href="logout" class="btn btn-secondary my-2">Log out</a>
-            {% else %}
-            <a href="login" class="btn btn-primary my-2">Login</a>
-            {% endif %}
-          </p>
         </div>
       </section>
 

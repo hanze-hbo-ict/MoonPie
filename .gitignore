@@ -9,3 +9,4 @@ package-lock.json
 package.json
 
 *.sqlite3
+*.sqlite

@@ -15,7 +15,7 @@ def aanmelden():
 @app.route('/bestellen', methods=['get'])
 def bestellen():
     import sqlite3
-    db = sqlite3.connect('mineral.sqlite3')
+    db = sqlite3.connect('minerals.sqlite3')
     cursor = db.execute(f'select * from minerals')
     minerals = cursor.fetchall()
     return render_template('better_product_page.html', data=minerals)

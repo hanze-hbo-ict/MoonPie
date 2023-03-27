@@ -57,15 +57,16 @@
 
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top" src="/static/imgs/{{d[0]}}.jpeg" alt="Diopside" style="width:25vw;height:25vh;">
+                <img class="card-img-top" src="/static/imgs/{{d.name}}.jpeg" alt="Diopside" style="width:25vw;height:25vh;">
                 <div class="card-body">
-                  <p class="card-text">{{ d[3] }}</p>
+                  <p class="card-text">{{ d.name }} ({{ d.formula }})</p>
+                  <p class="card-text">{{ d.description }}</p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                       <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                       <button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
                     </div>
-                    <small class="text-muted">k€ {{ d[4] }}</small>
+                    <small class="text-muted">k€ {{ d.price }}</small>
                   </div>
                 </div>
               </div>

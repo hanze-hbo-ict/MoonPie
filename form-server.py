@@ -5,6 +5,8 @@ from wtforms import (StringField, BooleanField, DateTimeField,
                                   TextAreaField, SubmitField)
 from wtforms.validators import DataRequired
 
+from models import *
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'demoapplicatie'
 
@@ -47,8 +49,12 @@ def login():
 def wtf_aanmelden():
     onboarding = OnboardingForm()
     if onboarding.validate_on_submit():
-        session['naam'] = onboarding.u_name.data
-        session['email'] = onboarding.u_email.data
+        name,pw,email = onboarding.u_name.data, onboarding.u_pass.data, onboarding.u_email.data
+        session['naam'] = name
+        session['email'] = email
+        session['password'] = pw
+        user = User(name=name, password=pw, email=email)
+        user.save()
 
         return redirect(url_for('bestellen'))
     return render_template('wtf_aanmelden.html', form=onboarding)
@@ -57,9 +63,11 @@ def wtf_aanmelden():
 @app.route('/bestellen', methods=['get'])
 def bestellen():
     import sqlite3
-    db = sqlite3.connect('minerals.sqlite3')
+    db = sqlite3.connect('moonpie.sqlite')
+    db.row_factory = sqlite3.Row
     cursor = db.execute(f'select * from minerals')
     minerals = cursor.fetchall()
+    print (minerals[0]['name'])
     return render_template('better_product_page.html', data=minerals)
 
 app.run(debug=True)

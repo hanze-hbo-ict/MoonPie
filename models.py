@@ -33,11 +33,11 @@ class User(base):
                                back_populates='users')
    
    def save(self):
-      sess = Session(engine)
-      print (sess)
-      sess.add(self)
-      sess.commit()
+      with Session(engine) as session:
+         session.add(self)
+         session.commit()
 
+   
 class Bestelling(base):
    __tablename__ = 'bestelling'
    id = Column(Integer, primary_key=True)
@@ -54,3 +54,11 @@ data = [ ('diopside', 216.55, 'MgCaSi_2O_6', 'Diopside is a monoclinic pyroxene 
 
 if __name__=='__main__':
    base.metadata.create_all(engine)
+   
+   session = Session(engine)
+   for x in data:
+      min = Mineral(name=x[0], mollmass=x[1], formula=x[2], description=x[3], price=x[4] )
+      session.add(min)
+
+   session.commit()
+

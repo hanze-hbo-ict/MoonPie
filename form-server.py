@@ -49,6 +49,7 @@ def wtf_aanmelden():
     if onboarding.validate_on_submit():
         session['naam'] = onboarding.u_name.data
         session['email'] = onboarding.u_email.data
+        session['password'] = onboarding.u_pass.data
 
         return redirect(url_for('bestellen'))
     return render_template('wtf_aanmelden.html', form=onboarding)

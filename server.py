@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, session, redirect, url_for
+from flask import Flask, render_template, flash, session, redirect, url_for, request
 from flask_wtf import FlaskForm
 from wtforms import (StringField, BooleanField, DateTimeField,
                                   RadioField, SelectField, PasswordField,
@@ -8,7 +8,7 @@ from wtforms.validators import DataRequired
 from flask_login import LoginManager
 from flask_login import login_user, logout_user, login_required
 
-from models import *
+import database as db
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'demoapplicatie'
@@ -16,6 +16,10 @@ app.config['SECRET_KEY'] = 'demoapplicatie'
 login_manager = LoginManager(app)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_user_by_id(user_id)
 
 
 class LoginForm(FlaskForm):
@@ -36,6 +40,7 @@ def index():
 
 @app.route('/logout')
 def logout():
+    logout_user()
     session.clear()
     return redirect(url_for('login'))
 
@@ -44,9 +49,13 @@ def logout():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        session['naam'] = form.u_name.data
-        session['password'] = form.u_password.data
-        return redirect(url_for('bestellen'))
+        user = db.check_user(dict(request.form))
+        if (user):
+            login_user(user)
+            flash ('welkom terug bro')
+            return redirect(url_for('bestellen'))
+        else:
+            flash('onbekend bro')
 
     return render_template('login.html', form=form)
 
@@ -55,25 +64,20 @@ def login():
 def wtf_aanmelden():
     onboarding = OnboardingForm()
     if onboarding.validate_on_submit():
-        name,pw,email = onboarding.u_name.data, onboarding.u_pass.data, onboarding.u_email.data
-        session['naam'] = name
-        session['email'] = email
-        session['password'] = pw
-        user = User(name=name, password=pw, email=email)
-        user.save()
+        user = db.save_user(dict(request.form))
+        if user:
+            flash('aangemeld hoor, alles check')
+            return redirect(url_for('bestellen'))
+        else:
+            flash('er ging iets mis bro')
 
-        return redirect(url_for('bestellen'))
     return render_template('wtf_aanmelden.html', form=onboarding)
 
 
 @app.route('/bestellen', methods=['get'])
+@login_required
 def bestellen():
-    import sqlite3
-    db = sqlite3.connect('moonpie.sqlite')
-    db.row_factory = sqlite3.Row
-    cursor = db.execute(f'select * from minerals')
-    minerals = cursor.fetchall()
-    print (minerals[0]['name'])
+    minerals = db.get_minerals()
     return render_template('better_product_page.html', data=minerals)
 
 app.run(debug=True)

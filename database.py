@@ -109,9 +109,9 @@ if __name__=='__main__':
         Mineral('ilmenite', 151.71, 'FeTiO_3', 'Ilmenite is a titanium-iron oxide mineral. It is a weakly magnetic black or steel-gray solid. It is the most important ore of titanium and the main source of titanium dioxide.', 3.14),
         Mineral('olvine',   203.77, '(Mg,Fe)2SiO4', "Olivine is a magnesium iron silicate with a complex chemical formula. The primary component of the Earth's upper mantle, it is a common mineral in Earth's subsurface, but weathers quickly on the surface.", 4.12)
     ]
-    with Session(engine) as sess:
-        sess.add_all(minerals)
-        sess.commit()
+    #with Session(engine) as sess:
+    #    sess.add_all(minerals)
+    #    sess.commit()
 
     bart = {"u_name":"bart", "u_email":'bart@bart.com', "u_pass":'supergeheim'}
     save_user(bart)

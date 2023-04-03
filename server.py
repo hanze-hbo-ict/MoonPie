@@ -5,10 +5,17 @@ from wtforms import (StringField, BooleanField, DateTimeField,
                                   TextAreaField, SubmitField)
 from wtforms.validators import DataRequired
 
+from flask_login import LoginManager
+from flask_login import login_user, logout_user, login_required
+
 from models import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'demoapplicatie'
+
+login_manager = LoginManager(app)
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 
 class LoginForm(FlaskForm):
@@ -23,10 +30,9 @@ class OnboardingForm(FlaskForm):
     u_consent = BooleanField("Ik doe afstand van al mijn rechten op privacy of geheimhouding")
     u_submit = SubmitField("Aanmelden maar")
 
-
-@app.route('/aanmelden', methods=['get'])
-def aanmelden():
-    return render_template('aanmelden.html')
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/logout')
 def logout():
@@ -45,7 +51,7 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route('/wtf-aanmelden', methods=['get', 'post'])
+@app.route('/aanmelden', methods=['get', 'post'])
 def wtf_aanmelden():
     onboarding = OnboardingForm()
     if onboarding.validate_on_submit():

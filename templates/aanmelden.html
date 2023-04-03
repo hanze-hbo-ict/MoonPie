@@ -1,44 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-<title>Aanmelden bij Moonpie</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-<link rel="stylesheet" href="/static/register.css">
 
-</head>
-<body>
-
-
-
+{% extends "base_template.html" %}
+{% block content %}
 <div class="signup-form">
     <h1>Moonpie Mining Corp.</h1>
-    <form action="/examples/actions/confirmation.php" method="post">
+    <form action="aanmelden" method="post">
+		{{ form.hidden_tag() }}
 		<h2>Hier aanmelden</h2>
 		<p>Vul het onderstaande formulier in om een account aan te maken.</p>
 		<hr>
         <div class="form-group">
 			<div class="input-group">
 				<span class="input-group-addon"><i class="fa fa-user"></i></span>
-				<input type="text" class="form-control" name="username" placeholder="Gebruikersnaam" required="required">
+				{{ form.u_name(class="form-control",placeholder=form.u_name.label.text) }}
 			</div>
         </div>
         <div class="form-group">
 			<div class="input-group">
 				<span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
-				<input type="email" class="form-control" name="email" placeholder="Email-adres" required="required">
+				{{ form.u_email(class="form-control",placeholder=form.u_email.label.text) }}
 			</div>
         </div>
 		<div class="form-group">
 			<div class="input-group">
 				<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-				<input type="text" class="form-control" name="password" placeholder="Wachtwoord" required="required">
+				{{ form.u_pass(class="form-control",placeholder=form.u_pass.label.text) }}
 			</div>
         </div>
 		<div class="form-group">
@@ -47,17 +32,17 @@
 					<i class="fa fa-lock"></i>
 					<i class="fa fa-check"></i>
 				</span>
-				<input type="text" class="form-control" name="confirm_password" placeholder="Wachtwoord nog een keer" required="required">
+				{{ form.u_pass_check(class="form-control",placeholder=form.u_pass_check.label.text) }}
 			</div>
         </div>
         <div class="form-group">
 			<label class="checkbox-inline"><input type="checkbox" required="required"> Ik doe afstand van al mijn rechten op privacy of geheimhouding</label>
 		</div>
 		<div class="form-group">
-            <button type="submit" class="btn btn-primary btn-lg">Aanmelden maar</button>
+			{{ form.u_submit(class="btn btn-primary btn-lg") }}
         </div>
     </form>
-	<div class="text-center">Al een account op deze site? <a href="#">Login hier</a></div>
+	<div class="text-center">Al een account op onze site? <a href="login">Login hier</a></div>
 </div>
-</body>
-</html>
+
+{% endblock %}

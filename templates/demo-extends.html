@@ -1,0 +1,24 @@
+{% extends "base_template.html" %}
+{% block title %}Index{% endblock %}
+
+{% block html_head %}
+<link rel="stylesheet" href="/static/album.css">
+  <style type="text/css">
+    .important {
+      color: #336699;
+    }
+
+    body { padding:5vw 5vh; }
+  </style>
+{% endblock %}
+
+{% block content %}
+    <h1>Index</h1>
+    <p class="important">
+      Welcome on my awsome homepage.
+    </p>
+    <form action="" method="update">
+      <b>dingen:</b> <input type="text">
+      <input type="submit" value="GO!">
+    </form>
+{% endblock %}

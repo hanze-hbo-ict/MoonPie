@@ -38,9 +38,11 @@ def logout():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        session['naam'] = form.u_name.data
-        session['password'] = form.u_password.data
-        return redirect(url_for('bestellen'))
+        if User.find({'u_name': form.u_name.data}):
+            session['naam'] = form.u_name.data
+            return redirect(url_for('bestellen'))
+        else:
+            return redirect(url_for('wtf_aanmelden'))
 
     return render_template('login.html', form=form)
 

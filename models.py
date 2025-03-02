@@ -37,7 +37,22 @@ class User(base):
          session.add(self)
          session.commit()
 
-   
+   @classmethod
+   def find(cls, credentials):
+      with Session(engine) as session:
+         user = session.query(User).filter(
+            User.name==credentials['u_name']
+         ).first()
+
+         if user is None:
+            return False
+      
+      return True
+
+
+
+
+
 class Bestelling(base):
    __tablename__ = 'bestelling'
    id = Column(Integer, primary_key=True)

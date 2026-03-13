@@ -10,7 +10,6 @@ from models import *
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'demoapplicatie'
 
-
 class LoginForm(FlaskForm):
     u_name = StringField("Gebruikersnaam")
     u_password = PasswordField("Wachtwoord")
@@ -24,9 +23,19 @@ class OnboardingForm(FlaskForm):
     u_submit = SubmitField("Aanmelden maar")
 
 
-@app.route('/aanmelden', methods=['get'])
+@app.route('/aanmelden', methods=['get','post'])
 def aanmelden():
-    return render_template('aanmelden.html')
+    form = OnboardingForm()
+    if form.validate_on_submit():
+        user = User(
+            name = form.u_name.data,
+            email = form.u_email.data,
+            password = form.u_pass.data
+        )
+        user.save()
+        return redirect(url_for('bestellen'))
+
+    return render_template('aanmelden.html',form=form)
 
 @app.route('/logout')
 def logout():
@@ -42,34 +51,15 @@ def login():
             session['naam'] = form.u_name.data
             return redirect(url_for('bestellen'))
         else:
-            return redirect(url_for('wtf_aanmelden'))
+            return redirect(url_for('aanmelden'))
 
     return render_template('login.html', form=form)
 
 
-@app.route('/wtf-aanmelden', methods=['get', 'post'])
-def wtf_aanmelden():
-    onboarding = OnboardingForm()
-    if onboarding.validate_on_submit():
-        name,pw,email = onboarding.u_name.data, onboarding.u_pass.data, onboarding.u_email.data
-        session['naam'] = name
-        session['email'] = email
-        session['password'] = pw
-        user = User(name=name, password=pw, email=email)
-        user.save()
-
-        return redirect(url_for('bestellen'))
-    return render_template('wtf_aanmelden.html', form=onboarding)
-
-
 @app.route('/bestellen', methods=['get'])
 def bestellen():
-    import sqlite3
-    db = sqlite3.connect('moonpie.sqlite')
-    db.row_factory = sqlite3.Row
-    cursor = db.execute(f'select * from minerals')
-    minerals = cursor.fetchall()
-    print (minerals[0]['name'])
+    minerals = Mineral.find_all()
     return render_template('better_product_page.html', data=minerals)
+
 
 app.run(debug=True)

@@ -38,7 +38,7 @@
           <p class="lead text-muted">We mine the moon, you get the minerals.</p>
           <p>
             {% if session.csrf_token %}
-            <h2>Welkom, {{ session.naam }}</h2>
+            <h2>Welkom, {{ user.name }}</h2>
             <a href="#" class="btn btn-primary my-2">Place order</a>
             <a href="logout" class="btn btn-secondary my-2">Log out</a>
             {% else %}
